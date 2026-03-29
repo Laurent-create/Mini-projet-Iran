@@ -19,6 +19,13 @@ $pageTitle = $title ?? 'BackOffice2';
 <?php require __DIR__ . '/../partials/header.php'; ?>
 
 <main>
+    <?php if (!empty($_SESSION['status'])): ?>
+        <div class="alert-success">
+            <?= htmlspecialchars($_SESSION['status']) ?>
+        </div>
+        <?php unset($_SESSION['status']); ?>
+    <?php endif; ?>
+
     <?= $content ?>
 </main>
 

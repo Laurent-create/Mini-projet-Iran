@@ -6,10 +6,10 @@
     <div class="card-body">
         <p class="help" style="margin:0;">
             Accès rapide :
+            <a href="<?= htmlspecialchars(($baseUrl ?? '') . '/articles') ?>">Articles</a>
             <?php if (is_array(($currentUser ?? null)) && (int) (($currentUser['type'] ?? 0)) === 1): ?>
-                <a href="<?= htmlspecialchars(($baseUrl ?? '') . '/users') ?>">Utilisateurs</a>
-            <?php else: ?>
-                <span>Fonctionnalités en cours d’ajout.</span>
+                · <a href="<?= htmlspecialchars(($baseUrl ?? '') . '/categories') ?>">Catégories</a>
+                · <a href="<?= htmlspecialchars(($baseUrl ?? '') . '/users') ?>">Utilisateurs</a>
             <?php endif; ?>
         </p>
     </div>
