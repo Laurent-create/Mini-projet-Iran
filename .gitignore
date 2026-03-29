@@ -1,0 +1,21 @@
+# Environment
+.env
+!.env.example
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# PHP
+/vendor/
+composer.lock
+*.log
+
+# Node (if front tooling is added later)
+node_modules/
+
+# Docker local data and overrides
+docker-compose.override.yml

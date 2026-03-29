@@ -1,0 +1,74 @@
+services:
+  frontoffice:
+    build:
+      context: ./FrontOffice
+      dockerfile: Dockerfile
+    container_name: iran_frontoffice
+    ports:
+      - "${FRONTOFFICE_PORT:-8080}:80"
+    volumes:
+      - ./FrontOffice:/var/www/html
+    environment:
+      APP_ENV: ${APP_ENV:-development}
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ${POSTGRES_DB:-iran_info}
+      DB_USER: ${POSTGRES_USER:-iran_user}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-change_me_in_local_env}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  backoffice:
+    build:
+      context: ./BackOffice
+      dockerfile: Dockerfile
+    container_name: iran_backoffice
+    ports:
+      - "${BACKOFFICE_PORT:-8081}:80"
+    volumes:
+      - ./BackOffice:/var/www/html
+    environment:
+      APP_ENV: ${APP_ENV:-development}
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ${POSTGRES_DB:-iran_info}
+      DB_USER: ${POSTGRES_USER:-iran_user}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-change_me_in_local_env}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  db:
+    image: postgres:15
+    container_name: iran_db
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-iran_info}
+      POSTGRES_USER: ${POSTGRES_USER:-iran_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change_me_in_local_env}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/001_init.sql:/docker-entrypoint-initdb.d/001_init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-iran_user} -d ${POSTGRES_DB:-iran_info}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge
