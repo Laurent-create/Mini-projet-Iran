@@ -22,10 +22,11 @@ spl_autoload_register(static function (string $class): void {
 });
 
 $config = require __DIR__ . '/config/config.php';
-$route = $_GET['url'] ?? 'home/index';
+$route = $_GET['url'] ?? 'articles';
 $segments = explode('/', trim($route, '/'));
 $controllerName = ucfirst($segments[0] ?: 'home') . 'Controller';
 $method = $segments[1] ?? 'index';
+$params = array_slice($segments, 2);
 
 $controllerClass = 'App\\Controllers\\' . $controllerName;
 if (!class_exists($controllerClass)) {
@@ -36,9 +37,15 @@ if (!class_exists($controllerClass)) {
 
 $controller = new $controllerClass($config);
 if (!method_exists($controller, $method)) {
-    http_response_code(404);
-    echo 'Action not found';
-    exit;
+    // Support pretty URLs like /articles/{slug} by routing to show($slug)
+    if (method_exists($controller, 'show') && isset($segments[1]) && $segments[1] !== '') {
+        $method = 'show';
+        $params = array_slice($segments, 1);
+    } else {
+        http_response_code(404);
+        echo 'Action not found';
+        exit;
+    }
 }
 
-$controller->{$method}();
+$controller->{$method}(...$params);
