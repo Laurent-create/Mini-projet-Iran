@@ -1,5 +1,55 @@
 RewriteEngine On
 
+# Compression for text-based assets.
+<IfModule mod_deflate.c>
+	AddOutputFilterByType DEFLATE text/plain text/html text/css text/javascript application/javascript application/json application/xml image/svg+xml
+	Header append Vary Accept-Encoding
+</IfModule>
+
+# Browser caching.
+<IfModule mod_expires.c>
+	ExpiresActive On
+	ExpiresByType text/css "access plus 30 days"
+	ExpiresByType application/javascript "access plus 30 days"
+	ExpiresByType text/javascript "access plus 30 days"
+	ExpiresByType image/jpeg "access plus 180 days"
+	ExpiresByType image/jpg "access plus 180 days"
+	ExpiresByType image/png "access plus 180 days"
+	ExpiresByType image/webp "access plus 180 days"
+	ExpiresByType image/avif "access plus 180 days"
+	ExpiresByType image/svg+xml "access plus 180 days"
+	ExpiresByType font/woff2 "access plus 180 days"
+	ExpiresByType font/woff "access plus 180 days"
+	ExpiresDefault "access plus 1 hour"
+</IfModule>
+
+<IfModule mod_headers.c>
+	<FilesMatch "\.(?:css|js|jpg|jpeg|png|webp|avif|svg|woff|woff2)$">
+		Header set Cache-Control "public, max-age=2592000, immutable"
+	</FilesMatch>
+
+	<FilesMatch "\.(?:html|php)$">
+		Header set Cache-Control "no-cache, no-store, must-revalidate"
+		Header set Pragma "no-cache"
+		Header set Expires "0"
+	</FilesMatch>
+</IfModule>
+
+# Redirect explicit index.php and .php URLs to clean URLs.
+RewriteCond %{THE_REQUEST} \s/+index\.php(?:[\s?]|$) [NC]
+RewriteRule ^index\.php$ / [R=301,L]
+
+RewriteCond %{THE_REQUEST} \s/+(.+?)\.php(?:[\s?]|$) [NC]
+RewriteCond %1 !^index$ [NC]
+RewriteRule ^ %1 [R=301,L]
+
+# Block direct access to internal folders.
+RewriteRule ^(?:app|core|config)/ - [F,L,NC]
+
+# SEO endpoints.
+RewriteRule ^robots\.txt$ index.php?url=seo/robots [QSA,L,NC]
+RewriteRule ^sitemap\.xml$ index.php?url=seo/sitemap [QSA,L,NC]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]

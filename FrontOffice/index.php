@@ -22,11 +22,25 @@ spl_autoload_register(static function (string $class): void {
 });
 
 $config = require __DIR__ . '/config/config.php';
-$route = $_GET['url'] ?? 'articles';
-$segments = explode('/', trim($route, '/'));
-$controllerName = ucfirst($segments[0] ?: 'home') . 'Controller';
-$method = $segments[1] ?? 'index';
-$params = array_slice($segments, 2);
+
+$segments = [];
+$requestPath = (string) (parse_url((string) ($_SERVER['REQUEST_URI'] ?? '/'), PHP_URL_PATH) ?? '/');
+
+if ($requestPath === '/robots.txt') {
+    $controllerName = 'SeoController';
+    $method = 'robots';
+    $params = [];
+} elseif ($requestPath === '/sitemap.xml') {
+    $controllerName = 'SeoController';
+    $method = 'sitemap';
+    $params = [];
+} else {
+    $route = $_GET['url'] ?? 'articles';
+    $segments = explode('/', trim($route, '/'));
+    $controllerName = ucfirst($segments[0] ?: 'home') . 'Controller';
+    $method = $segments[1] ?? 'index';
+    $params = array_slice($segments, 2);
+}
 
 $controllerClass = 'App\\Controllers\\' . $controllerName;
 if (!class_exists($controllerClass)) {
