@@ -62,31 +62,42 @@ $categories = $categories ?? [];
             images_upload_handler: (blobInfo, progress) => {
                 return new Promise((resolve, reject) => {
                     const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+                    console.log('🔐 CSRF Token:', csrf);
+                    console.log('📝 File name:', blobInfo.filename());
+                    
                     const formData = new FormData();
+                    formData.append('_token', csrf);
                     formData.append('file', blobInfo.blob(), blobInfo.filename());
+                    console.log('📦 FormData prepared');
 
                     fetch('<?= htmlspecialchars($baseUrl . '/articles/upload-tinymce') ?>', {
                         method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': csrf,
-                        },
                         credentials: 'same-origin',
                         body: formData,
                     })
                         .then(async (res) => {
+                            console.log('📡 Response status:', res.status, res.statusText);
                             if (!res.ok) {
-                                throw new Error('Upload failed');
+                                const text = await res.text();
+                                console.error('❌ Response body:', text);
+                                throw new Error('Upload failed (HTTP ' + res.status + ')');
                             }
                             return res.json();
                         })
                         .then((json) => {
+                            console.log('✅ JSON response:', json);
                             if (json && typeof json.location === 'string') {
+                                console.log('🎉 Upload success, location:', json.location);
                                 resolve(json.location);
                             } else {
+                                console.error('❌ Invalid response format:', json);
                                 reject('Invalid upload response');
                             }
                         })
-                        .catch((err) => reject(err?.message || 'Upload failed'));
+                        .catch((err) => {
+                            console.error('⚠️ Error:', err);
+                            reject(err?.message || 'Upload failed');
+                        });
                 });
             },
         });

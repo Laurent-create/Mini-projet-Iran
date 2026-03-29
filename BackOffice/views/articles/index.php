@@ -101,7 +101,7 @@ $filters = $filters ?? [];
                             <div class="cell-muted">
                                 <button type="button" class="image-popup-trigger"
                                         data-image-popup
-                                        data-image-src="/storage/<?= htmlspecialchars($article['image_principale']) ?>"
+                                        data-image-src="/uploads/<?= htmlspecialchars($article['image_principale']) ?>"
                                         data-image-alt="Image principale de l'article">
                                     Voir image
                                 </button>

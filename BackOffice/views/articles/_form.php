@@ -41,7 +41,7 @@ function old(string $field, array $oldData, array $articleData, $default = '') {
             <?php if ($isEdit && !empty($article['image_principale'])): ?>
                 <button type="button" class="image-popup-trigger help"
                         data-image-popup
-                        data-image-src="/storage/<?= htmlspecialchars($article['image_principale']) ?>"
+                        data-image-src="/uploads/<?= htmlspecialchars($article['image_principale']) ?>"
                         data-image-alt="Image principale actuelle">
                     Voir l'image actuelle
                 </button>

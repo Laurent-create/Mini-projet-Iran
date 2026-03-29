@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 $driver = getenv('DB_CONNECTION') ?: 'pgsql';
-$host = getenv('DB_HOST') ?: 'localhost';
+$host = getenv('DB_HOST') ?: 'db';
 $port = getenv('DB_PORT') ?: '5432';
-$dbname = getenv('DB_DATABASE') ?: 'testbackoffice';
-$username = getenv('DB_USERNAME') ?: 'postgres';
-$password = getenv('DB_PASSWORD') ?: 'postgres';
+$dbname = getenv('DB_NAME') ?: 'iran_info';
+$username = getenv('DB_USER') ?: 'iran_user';
+$password = getenv('DB_PASSWORD') ?: 'change_me_in_local_env';
 
 if ($driver !== 'pgsql') {
     throw new RuntimeException('Only pgsql is supported in backOffice2.');
