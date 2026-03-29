@@ -8,7 +8,7 @@
 **Tâches** : Création du repository Git (GitHub/GitLab public)
 **Type** : Configuration
 **Qui** : ETU003241
-**Estimation** : 30
+**Estimation** : 10
 
 ---
 
@@ -16,10 +16,10 @@
 
 **Catégorie** : Infrastructure
 **Module** : Setup
-**Tâches** : Mise en place Docker (FrontOffice + BackOffice + DB + volume uploads partagé)
+**Tâches** : Mise en place Docker (FrontOffice + BackOffice + DB)
 **Type** : Configuration
-**Qui** : ETU003241
-**Estimation** : 90
+**Qui** : ETU003337
+**Estimation** : 15
 
 ---
 
@@ -27,10 +27,10 @@
 
 **Catégorie** : Infrastructure
 **Module** : Setup
-**Tâches** : Initialisation projet Laravel BackOffice
+**Tâches** : Initialisation projet BackOffice
 **Type** : Configuration
 **Qui** : ETU003241
-**Estimation** : 60
+**Estimation** : 10
 
 ---
 
@@ -38,10 +38,10 @@
 
 **Catégorie** : Infrastructure
 **Module** : Setup
-**Tâches** : Initialisation projet Laravel FrontOffice
+**Tâches** : Initialisation projet FrontOffice
 **Type** : Configuration
 **Qui** : ETU003337
-**Estimation** : 60
+**Estimation** : 10
 
 ---
 
@@ -54,29 +54,7 @@
 **Tâches** : Conception du MCD
 **Type** : Conception
 **Qui** : ETU003241
-**Estimation** : 120
-
----
-
-## Tâche 6
-
-**Catégorie** : Infrastructure
-**Module** : Base de données
-**Tâches** : Création des migrations Laravel (ARTICLE, CATEGORIE, USER, TAG)
-**Type** : Développement
-**Qui** : ETU003241
-**Estimation** : 120
-
----
-
-## Tâche 7
-
-**Catégorie** : Infrastructure
-**Module** : Base de données
-**Tâches** : Création des relations (Article-Catégorie, Article-Tag)
-**Type** : Développement
-**Qui** : ETU003241
-**Estimation** : 90
+**Estimation** : 30
 
 ---
 
@@ -152,7 +130,7 @@
 
 **Catégorie** : Frontend Web
 **Module** : Setup
-**Tâches** : Configuration routing Laravel (pages publiques)
+**Tâches** : Configuration du routing FrontOffice en PHP natif (index.php, URLs propres /articles et /articles/{slug})
 **Type** : Développement
 **Qui** : ETU003337
 **Estimation** : 60
@@ -163,7 +141,7 @@
 
 **Catégorie** : Frontend Web
 **Module** : Articles
-**Tâches** : Page liste des articles
+**Tâches** : Développement de la page liste des articles (featured, pagination, catégories, métadonnées d'affichage)
 **Type** : Développement
 **Qui** : ETU003337
 **Estimation** : 120
@@ -174,7 +152,7 @@
 
 **Catégorie** : Frontend Web
 **Module** : Articles
-**Tâches** : Page détail article (affichage HTML + images)
+**Tâches** : Développement de la page détail article (affichage HTML, image de couverture, galerie, auteur, date)
 **Type** : Développement
 **Qui** : ETU003337
 **Estimation** : 150
@@ -185,7 +163,7 @@
 
 **Catégorie** : Frontend Web
 **Module** : Navigation
-**Tâches** : Menu catégories + navigation
+**Tâches** : Implémentation menu catégories + navigation responsive mobile (grille catégories sur petit écran)
 **Type** : Développement
 **Qui** : ETU003337
 **Estimation** : 90
@@ -203,59 +181,92 @@
 
 ---
 
-# Scénario 5 : Design & UX
-
 ## Tâche 19
 
 **Catégorie** : Frontend Web
+**Module** : Gestion d'erreurs
+**Tâches** : Intégration de la page 404 FrontOffice et fallback contrôleur pour article introuvable
+**Type** : Développement
+**Qui** : ETU003337
+**Estimation** : 45
+
+---
+
+# Scénario 5 : Design & UX
+
+## Tâche 20
+
+**Catégorie** : Frontend Web
 **Module** : Design
-**Tâches** : Design responsive (mobile + desktop)
+**Tâches** : Design responsive mobile + desktop (layout, typographie, sections featured/cards)
 **Type** : Design
 **Qui** : ETU003337
 **Estimation** : 180
 
 ---
 
-## Tâche 20
+## Tâche 21
 
 **Catégorie** : Frontend Web
 **Module** : UI
-**Tâches** : Intégration UI (cards articles, images, layout)
+**Tâches** : Intégration UI (cards articles, header/footer, navigation catégories, composants pagination)
 **Type** : Développement
 **Qui** : ETU003337
 **Estimation** : 150
 
 ---
 
+## Tâche 22
+
+**Catégorie** : Frontend Web
+**Module** : UX
+**Tâches** : Amélioration de lisibilité mobile (navigation catégories, zones cliquables, hiérarchie visuelle)
+**Type** : Développement
+**Qui** : ETU003337
+**Estimation** : 90
+
+---
+
 # Scénario 6 : SEO & Optimisation
 
-## Tâche 21
+## Tâche 23
 
 **Catégorie** : SEO
 **Module** : On-Page
-**Tâches** : Intégration balises HTML (title, meta, H1-H6, alt images)
+**Tâches** : Intégration SEO On-Page (title, meta description, canonical, H1/H2, alt images)
 **Type** : Développement
 **Qui** : ETU003337
 **Estimation** : 120
 
 ---
 
-## Tâche 22
+## Tâche 24
 
 **Catégorie** : SEO
 **Module** : Technique
-**Tâches** : Génération sitemap.xml + robots.txt
+**Tâches** : Mise en place SEO technique (sitemap.xml dynamique, robots.txt dynamique, JSON-LD)
 **Type** : Développement
 **Qui** : ETU003241
 **Estimation** : 90
 
 ---
 
-## Tâche 23
+## Tâche 25
 
 **Catégorie** : SEO
 **Module** : Performance
-**Tâches** : Optimisation Lighthouse (images, cache, vitesse)
+**Tâches** : Optimisation Lighthouse (cache HTTP, compression GZip/Deflate, lazy loading, fetchpriority)
+**Type** : Développement
+**Qui** : ETU003337
+**Estimation** : 150
+
+---
+
+## Tâche 26
+
+**Catégorie** : SEO
+**Module** : Images
+**Tâches** : Implémentation du redimensionnement dynamique des images (logo, hero, miniatures, galerie) avec génération WebP et srcset/sizes
 **Type** : Développement
 **Qui** : ETU003337
 **Estimation** : 150
@@ -264,7 +275,7 @@
 
 # Scénario 7 : Tests & Livraison
 
-## Tâche 24
+## Tâche 27
 
 **Catégorie** : Tests
 **Module** : Fonctionnel
@@ -275,7 +286,7 @@
 
 ---
 
-## Tâche 25
+## Tâche 28
 
 **Catégorie** : Documentation
 **Module** : Technique
@@ -286,7 +297,7 @@
 
 ---
 
-## Tâche 26
+## Tâche 29
 
 **Catégorie** : Livraison
 **Module** : Final
