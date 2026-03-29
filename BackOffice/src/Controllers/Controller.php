@@ -118,4 +118,9 @@ abstract class Controller
         header('Location: ' . $this->url($path));
         exit;
     }
+
+    protected function flashStatus(string $message): void
+    {
+        $_SESSION['status'] = $message;
+    }
 }

@@ -5,6 +5,10 @@ declare(strict_types=1);
 use App\Controllers\AuthController;
 use App\Controllers\DashboardController;
 use App\Controllers\UserController;
+use App\Controllers\ArticleController;
+use App\Controllers\CategoryController;
+
+
 
 // ---- Bootstrap ----
 
@@ -153,6 +157,67 @@ if ($path === '/users/show' && $method === 'GET') {
 	exit;
 }
 
-http_response_code(404);
-echo '404 - Not Found';
+// Articles
+if ($path === '/articles' && $method === 'GET') {
+    (new ArticleController($pdo))->index($query);
+    exit;
+}
+if ($path === '/articles/create' && $method === 'GET') {
+    (new ArticleController($pdo))->create();
+    exit;
+}
+if ($path === '/articles/create' && $method === 'POST') {
+    (new ArticleController($pdo))->store($post, $files);
+    exit;
+}
+if ($path === '/articles/edit' && $method === 'GET') {
+    (new ArticleController($pdo))->edit($query);
+    exit;
+}
+if ($path === '/articles/edit' && $method === 'POST') {
+    (new ArticleController($pdo))->update($query, $post, $files);
+    exit;
+}
+if ($path === '/articles/publish' && $method === 'POST') {
+    (new ArticleController($pdo))->publish($query, $post);
+    exit;
+}
+if ($path === '/articles/archive' && $method === 'POST') {
+    (new ArticleController($pdo))->archive($query, $post);
+    exit;
+}
+if ($path === '/articles/destroy' && $method === 'POST') {
+    (new ArticleController($pdo))->destroy($query, $post);
+    exit;
+}
+if ($path === '/articles/upload-tinymce' && $method === 'POST') {
+    (new ArticleController($pdo))->uploadTinyMceImage($post, $files);
+    exit;
+}
+
+// Categories
+if ($path === '/categories' && $method === 'GET') {
+    (new CategoryController($pdo))->index($query);
+    exit;
+}
+if ($path === '/categories/create' && $method === 'GET') {
+    (new CategoryController($pdo))->create();
+    exit;
+}
+if ($path === '/categories/create' && $method === 'POST') {
+    (new CategoryController($pdo))->store($post);
+    exit;
+}
+if ($path === '/categories/edit' && $method === 'GET') {
+    (new CategoryController($pdo))->edit($query);
+    exit;
+}
+if ($path === '/categories/edit' && $method === 'POST') {
+    (new CategoryController($pdo))->update($query, $post);
+    exit;
+}
+if ($path === '/categories/destroy' && $method === 'POST') {
+    (new CategoryController($pdo))->destroy($query, $post);
+    exit;
+}
 
