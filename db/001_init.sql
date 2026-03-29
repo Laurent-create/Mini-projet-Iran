@@ -148,7 +148,7 @@ INSERT INTO article (
 <h2>Conclusion</h2>
 <p>Pour le suivi de la situation, les éléments les plus utiles sont souvent les plus sobres : évolution des accès humanitaires, capacité des hôpitaux, continuité des services, et signaux de médiation. Les annonces spectaculaires existent, mais elles gagnent à être recoupées avant d''être intégrées à l''analyse.</p>',
    'iran-point-de-situation-escalade-conflit',
-   'uploads/articles/iran-conflit-1.jpg',
+   'articles/iran-conflit-1.jpg',
    CURRENT_DATE,
    NOW(),
    'Iran : point de situation sur l''escalade du conflit',
@@ -214,7 +214,7 @@ INSERT INTO article (
 <h2>Conclusion</h2>
 <p>Dans un conflit, l''économie ne s''arrête pas, mais elle se reconfigure autour du risque et de la survie : la logistique devient plus chère, moins prévisible, et plus inégale selon les régions. La crédibilité d''une analyse dépend alors de sa prudence : distinguer les faits observables, les hypothèses, et ce qui reste incertain.</p>',
    'iran-consequences-economiques-logistiques-conflit',
-   'uploads/articles/iran-conflit-2.jpg',
+   'articles/iran-conflit-2.jpg',
    CURRENT_DATE,
    NOW(),
    'Iran : conséquences économiques et logistiques du conflit',

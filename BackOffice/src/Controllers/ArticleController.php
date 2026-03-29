@@ -78,7 +78,7 @@ final class ArticleController extends Controller
 
         $imagePath = '';
         if (!empty($files['image_principale'])) {
-            $imagePath = (string) ($this->saveUploadedImage((array) $files['image_principale'], 'uploads/articles') ?? '');
+            $imagePath = (string) ($this->saveUploadedImage((array) $files['image_principale'], 'articles') ?? '');
             if ($imagePath === '') {
                 $errors[] = "L'image principale n'est pas valide (jpg/jpeg/png/webp, 5 Mo max).";
             }
@@ -188,7 +188,7 @@ final class ArticleController extends Controller
 
         $imagePath = (string) ($article['image_principale'] ?? '');
         if (!empty($files['image_principale']) && (int) (($files['image_principale']['error'] ?? UPLOAD_ERR_NO_FILE)) !== UPLOAD_ERR_NO_FILE) {
-            $newPath = (string) ($this->saveUploadedImage((array) $files['image_principale'], 'uploads/articles') ?? '');
+            $newPath = (string) ($this->saveUploadedImage((array) $files['image_principale'], 'articles') ?? '');
             if ($newPath === '') {
                 $errors[] = "L'image principale n'est pas valide (jpg/jpeg/png/webp, 5 Mo max).";
             } else {
@@ -323,23 +323,68 @@ final class ArticleController extends Controller
     /** @param array<string,mixed> $post @param array<string,mixed> $files */
     public function uploadTinyMceImage(array $post, array $files): void
     {
-        $this->requireAuth();
-        $this->verifyCsrf($post);
-
-        $file = $files['file'] ?? null;
-        $path = $file ? $this->saveUploadedImage((array) $file, 'uploads/articles/content', 5 * 1024 * 1024, ['image/jpeg', 'image/png', 'image/webp', 'image/gif']) : null;
-
-        if (!$path) {
-            http_response_code(422);
-            header('Content-Type: application/json; charset=utf-8');
-            echo json_encode(['error' => 'Invalid file'], JSON_UNESCAPED_SLASHES);
-            return;
+        // Clear any output buffering to prevent interfering with JSON response
+        while (ob_get_level() > 0) {
+            ob_end_clean();
         }
 
+        // Start output buffering to catch any stray output
+        ob_start();
+
+        // Set JSON content type first to prevent any HTML error output
         header('Content-Type: application/json; charset=utf-8');
-        echo json_encode([
-            'location' => $this->url('/storage/' . $path),
-        ], JSON_UNESCAPED_SLASHES);
+
+        try {
+            // Verify auth - return JSON, not redirect
+            if ($this->currentUser() === null) {
+                http_response_code(401);
+                ob_end_clean();
+                echo json_encode(['error' => 'Unauthorized'], JSON_UNESCAPED_SLASHES);
+                exit;
+            }
+
+            // Verify CSRF
+            $token = (string) ($post['_token'] ?? '');
+            if ($token === '' || !hash_equals($this->csrfToken(), $token)) {
+                http_response_code(419);
+                ob_end_clean();
+                echo json_encode(['error' => 'CSRF token mismatch'], JSON_UNESCAPED_SLASHES);
+                exit;
+            }
+
+            // Process file upload
+            $file = $files['file'] ?? null;
+            if (!$file || !isset($file['tmp_name'])) {
+                http_response_code(400);
+                ob_end_clean();
+                echo json_encode(['error' => 'No file provided'], JSON_UNESCAPED_SLASHES);
+                exit;
+            }
+
+            // Save the uploaded image
+            $path = $this->saveUploadedImage((array) $file, 'articles/content', 5 * 1024 * 1024, ['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
+
+            if (!$path) {
+                http_response_code(422);
+                ob_end_clean();
+                echo json_encode(['error' => 'Failed to save image. Check file type and size.'], JSON_UNESCAPED_SLASHES);
+                exit;
+            }
+
+            // Success response
+            http_response_code(200);
+            ob_end_clean();
+            echo json_encode([
+                'location' => $this->url('/uploads/' . $path),
+            ], JSON_UNESCAPED_SLASHES);
+            exit;
+        } catch (\Throwable $e) {
+            // Catch any exceptions (including fatal errors converted to exceptions) and return as JSON error
+            http_response_code(500);
+            ob_end_clean();
+            echo json_encode(['error' => 'Server error: ' . $e->getMessage()], JSON_UNESCAPED_SLASHES);
+            exit;
+        }
     }
 
     /** @param array<string,mixed> $post @return array{0: array<int,string>, 1: array<string,string>} */
@@ -393,7 +438,7 @@ final class ArticleController extends Controller
 
     private function projectRoot(): string
     {
-        return dirname(__DIR__, 3);
+        return dirname(__DIR__, 2);
     }
 
     /** @param array<string,mixed> $file */
@@ -432,7 +477,7 @@ final class ArticleController extends Controller
         };
 
         $root = $this->projectRoot();
-        $storageDir = $root . '/storage/' . trim($subDir, '/');
+        $storageDir = $root . '/uploads/' . trim($subDir, '/');
         if (!is_dir($storageDir) && !mkdir($storageDir, 0777, true) && !is_dir($storageDir)) {
             return null;
         }
