@@ -8,6 +8,7 @@ services:
       - "${FRONTOFFICE_PORT:-8080}:80"
     volumes:
       - ./FrontOffice:/var/www/html
+      - ./uploads_public:/var/www/html/uploads
     environment:
       APP_ENV: ${APP_ENV:-development}
       DB_HOST: db
@@ -31,6 +32,7 @@ services:
       - "${BACKOFFICE_PORT:-8081}:80"
     volumes:
       - ./BackOffice:/var/www/html
+      - ./uploads_public:/var/www/html/uploads
     environment:
       APP_ENV: ${APP_ENV:-development}
       DB_HOST: db
