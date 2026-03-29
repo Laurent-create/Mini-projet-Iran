@@ -36,6 +36,31 @@ abstract class Controller
         require $layoutFile;
     }
 
+    protected function renderFullPage(string $view, array $data = []): void
+    {
+        $baseUrl = $data['baseUrl'] ?? $this->baseUrl();
+        $currentUser = $data['currentUser'] ?? $this->currentUser();
+        $csrfToken = $data['csrfToken'] ?? $this->csrfToken();
+
+        $viewFile = __DIR__ . '/../../views/' . ltrim($view, '/') . '.php';
+        if (!is_file($viewFile)) {
+            throw new \RuntimeException('View not found: ' . $view);
+        }
+
+        $data = array_merge(
+            [
+                'baseUrl' => $baseUrl,
+                'currentUser' => $currentUser,
+                'csrfToken' => $csrfToken,
+            ],
+            $data
+        );
+
+        extract($data, EXTR_SKIP);
+
+        require $viewFile;
+    }
+
     /** @return array{id:int,email:string,type:int}|null */
     protected function currentUser(): ?array
     {

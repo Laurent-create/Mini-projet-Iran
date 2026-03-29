@@ -22,7 +22,7 @@ final class AuthController extends Controller
             $this->redirect('/dashboard');
         }
 
-        $this->render('auth/login', [
+        $this->renderFullPage('auth/login', [
             'title' => 'Connexion',
             'errors' => [],
             'old' => [],
@@ -35,7 +35,7 @@ final class AuthController extends Controller
         $this->verifyCsrf($post);
 
         $email = trim((string) ($post['email'] ?? ''));
-        $password = (string) ($post['mot_de_passe'] ?? '');
+        $password = (string) ($post['password'] ?? '');
 
         $errors = [];
         if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -46,7 +46,7 @@ final class AuthController extends Controller
         }
 
         if (!empty($errors)) {
-            $this->render('auth/login', [
+            $this->renderFullPage('auth/login', [
                 'title' => 'Connexion',
                 'errors' => $errors,
                 'old' => ['email' => $email],
@@ -56,7 +56,7 @@ final class AuthController extends Controller
 
         $user = $this->users->findForAuthByEmail($email);
         if ($user === null || !hash_equals((string) $user['pass'], (string) $password)) {
-            $this->render('auth/login', [
+            $this->renderFullPage('auth/login', [
                 'title' => 'Connexion',
                 'errors' => ['Identifiants incorrects.'],
                 'old' => ['email' => $email],
@@ -80,7 +80,7 @@ final class AuthController extends Controller
             $this->redirect('/dashboard');
         }
 
-        $this->render('auth/register', [
+        $this->renderFullPage('auth/register', [
             'title' => 'Inscription',
             'errors' => [],
             'old' => [],
@@ -94,7 +94,8 @@ final class AuthController extends Controller
 
         $nom = trim((string) ($post['nom'] ?? ''));
         $email = trim((string) ($post['email'] ?? ''));
-        $password = (string) ($post['mot_de_passe'] ?? '');
+        $password = (string) ($post['password'] ?? '');
+        $passwordConfirmation = (string) ($post['password_confirmation'] ?? '');
 
         $errors = [];
 
@@ -118,10 +119,12 @@ final class AuthController extends Controller
             $errors[] = 'Le mot de passe est obligatoire.';
         } elseif (mb_strlen($password) > 50) {
             $errors[] = 'Le mot de passe ne doit pas dépasser 50 caractères.';
+        } elseif ($password !== $passwordConfirmation) {
+            $errors[] = 'Les mots de passe ne correspondent pas.';
         }
 
         if (!empty($errors)) {
-            $this->render('auth/register', [
+            $this->renderFullPage('auth/register', [
                 'title' => 'Inscription',
                 'errors' => $errors,
                 'old' => ['nom' => $nom, 'email' => $email],

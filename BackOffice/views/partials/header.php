@@ -13,7 +13,6 @@ $homeHref = $isLoggedIn ? ($baseUrl . '/dashboard') : ($baseUrl . '/login');
 
             <?php if ($isLoggedIn): ?>
                 <span class="navbar-divider">|</span>
-                <a href="<?= htmlspecialchars($baseUrl . '/dashboard') ?>" class="navbar-link">Dashboard</a>
                 <a href="<?= htmlspecialchars($baseUrl . '/articles') ?>" class="navbar-link">Articles</a>
                 <?php if ($isAdmin): ?>
                     <a href="<?= htmlspecialchars($baseUrl . '/users') ?>" class="navbar-link">Utilisateurs</a>
