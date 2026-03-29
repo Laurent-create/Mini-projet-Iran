@@ -113,6 +113,20 @@ class ArticleModel
         return $stmt->fetchAll();
     }
 
+    public function getSitemapArticles(): array
+    {
+        $stmt = $this->db()->query(
+                        'SELECT slug, date_publication, date_creation
+             FROM article
+             WHERE id_article_statu = 2
+               AND slug IS NOT NULL
+                             AND slug <> \'\'
+             ORDER BY date_publication DESC NULLS LAST, id_article DESC'
+        );
+
+        return $stmt->fetchAll();
+    }
+
     private function buildWhere(string $search, int $categoryId, ?int $excludeId, array &$params): string
     {
         $parts = ['a.id_article_statu = 2'];

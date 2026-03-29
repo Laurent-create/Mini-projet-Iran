@@ -13,6 +13,16 @@ $resolveImageUrl = static function (string $path): string {
     return '/' . ltrim($path, '/');
 };
 
+$buildVariantUrl = static function (string $path, string $preset) use ($resolveImageUrl): string {
+    $resolved = $resolveImageUrl($path);
+
+    if (!str_starts_with($resolved, '/uploads/')) {
+        return $resolved;
+    }
+
+    return '/media/resize/' . rawurlencode($preset) . $resolved;
+};
+
 $formatDateTime = static function (?string $rawDate): string {
     if ($rawDate === null || trim($rawDate) === '') {
         return '';
@@ -22,7 +32,8 @@ $formatDateTime = static function (?string $rawDate): string {
     return $timestamp === false ? '' : date('d/m/Y H:i', $timestamp);
 };
 
-$coverImage = $resolveImageUrl((string) ($article['image_principale'] ?? ''));
+$coverImage = $buildVariantUrl((string) ($article['image_principale'] ?? ''), 'cover');
+$coverImage2x = $buildVariantUrl((string) ($article['image_principale'] ?? ''), 'cover2x');
 $publicationDate = $formatDateTime($article['date_publication'] ?? null);
 
 require __DIR__ . '/../partials/header.php';
@@ -46,7 +57,7 @@ require __DIR__ . '/../partials/header.php';
     </header>
 
     <figure class="cover-image">
-        <img src="<?= htmlspecialchars($coverImage, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars((string) ($article['titre'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
+        <img src="<?= htmlspecialchars($coverImage, ENT_QUOTES, 'UTF-8') ?>" srcset="<?= htmlspecialchars($coverImage, ENT_QUOTES, 'UTF-8') ?> 1200w, <?= htmlspecialchars($coverImage2x, ENT_QUOTES, 'UTF-8') ?> 1600w" sizes="(max-width: 980px) 100vw, 90vw" alt="<?= htmlspecialchars((string) ($article['titre'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" width="1200" height="675" loading="eager" fetchpriority="high" decoding="async">
     </figure>
 
     <div class="prose">
@@ -58,9 +69,12 @@ require __DIR__ . '/../partials/header.php';
             <h2>Gallery</h2>
             <div class="gallery-grid">
                 <?php foreach ($images as $image): ?>
-                    <?php $galleryUrl = $resolveImageUrl((string) ($image['url'] ?? '')); ?>
+                    <?php
+                        $galleryUrl = $buildVariantUrl((string) ($image['url'] ?? ''), 'gallery');
+                        $galleryUrl2x = $buildVariantUrl((string) ($image['url'] ?? ''), 'gallery2x');
+                    ?>
                     <figure class="gallery-item">
-                        <img src="<?= htmlspecialchars($galleryUrl, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars((string) (($image['legend'] ?? '') !== '' ? $image['legend'] : ($article['titre'] ?? '')), ENT_QUOTES, 'UTF-8') ?>">
+                        <img src="<?= htmlspecialchars($galleryUrl, ENT_QUOTES, 'UTF-8') ?>" srcset="<?= htmlspecialchars($galleryUrl, ENT_QUOTES, 'UTF-8') ?> 640w, <?= htmlspecialchars($galleryUrl2x, ENT_QUOTES, 'UTF-8') ?> 960w" sizes="(max-width: 720px) 100vw, (max-width: 1100px) 48vw, 33vw" alt="<?= htmlspecialchars((string) (($image['legend'] ?? '') !== '' ? $image['legend'] : ($article['titre'] ?? '')), ENT_QUOTES, 'UTF-8') ?>" width="640" height="480" loading="lazy" decoding="async">
                         <?php if (!empty($image['legend'])): ?>
                             <figcaption><?= htmlspecialchars((string) $image['legend'], ENT_QUOTES, 'UTF-8') ?></figcaption>
                         <?php endif; ?>
