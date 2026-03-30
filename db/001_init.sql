@@ -1,4 +1,4 @@
-CREATE TABLE type_utilisateur(
+﻿CREATE TABLE type_utilisateur(
    Id_type_utilisateur SERIAL,
    libelle VARCHAR(50),
    PRIMARY KEY(Id_type_utilisateur)
@@ -77,6 +77,13 @@ INSERT INTO article_categorie (libelle) VALUES
 INSERT INTO utilisateur (nom, email, mot_de_passe, date_creation, Id_type_utilisateur) VALUES
 ('Admin Iran', 'admin@irannews.com', 'AdminPass123', CURRENT_DATE, 1),      -- Admin BackOffice
 ('Redacteur Iran', 'redacteur@irannews.com', 'RedacPass123', CURRENT_DATE, 2); -- Rédacteur FrontOffice
+
+-- Redacteurs additionnels pour simuler une vraie equipe editoriale
+INSERT INTO utilisateur (nom, email, mot_de_passe, date_creation, Id_type_utilisateur) VALUES
+('Leila Farahani', 'leila.farahani@irannews.com', 'LeilaPass123', CURRENT_DATE, 2),
+('Omid Rahimi', 'omid.rahimi@irannews.com', 'OmidPass123', CURRENT_DATE, 2),
+('Sara Moini', 'sara.moini@irannews.com', 'SaraPass123', CURRENT_DATE, 2),
+('Navid Azari', 'navid.azari@irannews.com', 'NavidPass123', CURRENT_DATE, 2);
 
 -- Articles de démonstration (conflit en Iran)
 -- Convention IDs (sur base fraîche):
@@ -223,5 +230,257 @@ INSERT INTO article (
    2,
    1
 );
+
+-- Articles additionnels : objectif final = 2 articles par categorie
+-- Categories: 1=Politique, 2=Conflits, 3=Economie, 4=Culture, 5=Sante
+INSERT INTO article (
+   titre,
+   contenu,
+   slug,
+   image_principale,
+   date_creation,
+   date_publication,
+   meta_title,
+   meta_description,
+   Id_article_categorie,
+   Id_article_statu,
+   Id_utilisateur
+) VALUES
+(
+   'Iran : recomposition politique et equilibres institutionnels',
+   '<h2>Contexte institutionnel</h2>
+<p>Dans la vie politique iranienne, les dynamiques de pouvoir ne se lisent pas uniquement a travers une election. Elles reposent sur un ensemble d institutions, de procedures et d arbitrages entre differents centres de decision. Cet article propose une lecture de demonstration, destinee a un environnement de test editorial, avec une approche descriptive et prudente.</p>
+
+<h2>Acteurs et rapports de force</h2>
+<p>Les debats politiques internes mobilisent des sensibilites diverses, parfois qualifiees de conservatrices, pragmatiques ou reformistes selon les dossiers. Dans la pratique, ces etiquettes restent evolutives: une coalition ponctuelle peut se former sur un texte budgetaire puis se diviser sur un enjeu diplomatique. Cette fluidite complique les previsions rapides et impose une lecture par sequence.</p>
+
+<h2>Processus decisionnels</h2>
+<p>La fabrication des politiques publiques suit une chaine institutionnelle qui peut ralentir l execution des annonces. Entre arbitrage administratif, validation politique et contraintes juridiques, le calendrier reel differe souvent du calendrier communique. Les observateurs privilegient donc des indicateurs de suivi concrets: decrets publies, budgets alloues, dispositifs mis en oeuvre localement.</p>
+
+<h2>Effets socio economiques</h2>
+<p>La perception citoyenne est fortement liee au niveau des prix, a l emploi et a la qualite des services. Lorsque l inflation accelere, la demande d ajustement devient plus visible dans l espace public. Les autorites peuvent annoncer des mesures de soutien, mais leur impact depend de la capacite de financement et de la vitesse de deploiement sur le terrain.</p>
+
+<h2>Perspectives a court terme</h2>
+<p>Trois scenarios sont generalement envisages: continuité prudente, ajustements progressifs ou reconfiguration plus nette des alliances internes. Aucun scenario ne se confirme sans signaux institutionnels repetes dans la duree. Pour cette raison, une grille de lecture robuste combine informations officielles, donnees economiques et verifications independantes.</p>
+
+<h2>Conclusion</h2>
+<p>La recomposition politique iranienne est moins un basculement soudain qu un processus continu d ajustement. L analyse utile repose sur des faits observables et sur la distinction entre annonce, adoption et execution. Cette methode limite les interpretations excessives et rend le suivi editorial plus fiable.</p>',
+   'iran-recomposition-politique-equilibres-institutionnels',
+   'articles/iran-politique-1.jpg',
+   CURRENT_DATE,
+   NOW() - INTERVAL '10 days',
+   'Iran : recomposition politique et equilibres institutionnels',
+   'Analyse de demonstration sur les equilibres institutionnels et les dynamiques politiques en Iran.',
+   1,
+   2,
+   3
+),
+(
+   'Iran : gouvernance locale et mise en oeuvre des reformes',
+   '<h2>Pourquoi la gouvernance locale compte</h2>
+<p>Les decisions nationales produisent leurs effets a travers des administrations locales, des municipalites et des services territoriaux. Cette couche de mise en oeuvre est souvent decisive pour evaluer la realite d une reforme. Dans un cadre de demonstration, cet article decrit les mecanismes generaux sans pretendre couvrir toute la diversite regionale.</p>
+
+<h2>Capacites administratives</h2>
+<p>Une politique peut etre bien concue sur le papier et rencontrer des difficultes pratiques: manque de personnel, coordination inegale ou outils numeriques insuffisants. Les ecarts de capacite entre territoires influencent la perception d efficacite. D ou l importance d indicateurs comparables entre provinces.</p>
+
+<h2>Financement et priorisation</h2>
+<p>La mise en oeuvre depend du financement reel disponible et de la hierarchie des priorites locales. Quand les budgets sont contraints, les gestionnaires privilegient les services juges essentiels. Cette logique peut retarder des projets visibles mais non urgents, meme lorsqu ils ont ete annonces au niveau central.</p>
+
+<h2>Transparence et confiance</h2>
+<p>La confiance citoyenne augmente lorsque les calendriers, les couts et les resultats sont publies de facon reguliere. Les mecanismes de retour d information, y compris les reclamations et les audits, renforcent la qualite de pilotage. En contexte sensible, la clarte des informations devient un facteur de stabilite.</p>
+
+<h2>Lecture operationnelle</h2>
+<p>Pour suivre une reforme, les observateurs utilisent une matrice simple: texte adopte, budget execute, service effectif, retour des usagers. Cette approche evite de confondre communication et impact. Elle permet aussi d identifier les zones ou un appui technique est prioritaire.</p>
+
+<h2>Conclusion</h2>
+<p>La gouvernance locale est le test final de toute decision publique. Sans execution coherente, les objectifs politiques restent partiellement atteints. Une approche basee sur des preuves et des mesures periodiques améliore la qualite du debat public.</p>',
+   'iran-gouvernance-locale-mise-en-oeuvre-reformes',
+   'articles/iran-politique-2.jpg',
+   CURRENT_DATE,
+   NOW() - INTERVAL '7 days',
+   'Iran : gouvernance locale et mise en oeuvre des reformes',
+   'Article de demonstration sur les enjeux de gouvernance locale et de mise en oeuvre des politiques publiques.',
+   1,
+   2,
+   4
+),
+(
+   'Iran : inflation, emplois et ajustements du marche interieur',
+   '<h2>Une inflation qui recompose les comportements</h2>
+<p>Lorsque les prix augmentent durablement, les menages et les entreprises adaptent rapidement leurs arbitrages. Les depenses discretes reculent, les achats essentiels sont priorises et les strategies de precaution se renforcent. Cet article de demonstration resume les mecanismes les plus frequents observes dans les phases de tension economique.</p>
+
+<h2>Marche du travail et revenus</h2>
+<p>Le niveau d emploi ne traduit pas a lui seul la situation sociale: la qualite des postes, la stabilite des revenus et la progression des salaires reels comptent tout autant. Dans un contexte inflationniste, la pression sur les revenus fixes peut devenir le principal facteur de fragilite. Les politiques publiques cherchent alors a combiner soutien ciblé et stabilisation macroeconomique.</p>
+
+<h2>Entreprises et couts de production</h2>
+<p>Les entreprises font face a une hausse des couts de transport, d approvisionnement et de financement. Pour proteger leur marge, elles ajustent leurs prix ou reduisent certaines lignes de depense. Ces decisions influencent directement l offre disponible et la dynamique concurrentielle sur le marche interieur.</p>
+
+<h2>Canaux de transmission des chocs</h2>
+<p>Les chocs exterieurs touchent l economie nationale via plusieurs canaux: energie, logistique, importations intermediaires et taux de change. Leur intensite varie selon les secteurs et la dependance aux intrants importes. Une lecture sectorielle reste donc essentielle pour eviter les conclusions trop generales.</p>
+
+<h2>Indicateurs de suivi utiles</h2>
+<p>Parmi les indicateurs les plus pertinents figurent l evolution du panier de base, la disponibilite des produits essentiels, les delais d approvisionnement et la dynamique de l emploi formel. Le croisement de ces donnees offre une image plus solide que la lecture d un seul chiffre. Les tendances doivent etre interpretees sur plusieurs periodes.</p>
+
+<h2>Conclusion</h2>
+<p>L ajustement du marche interieur iranien repose sur des arbitrages permanents entre stabilite des prix, soutien des revenus et continuité de l offre. Les mesures efficaces sont souvent graduelles et combinees. Une analyse rigoureuse privilegie les preuves, la comparaison temporelle et la prudence interpretative.</p>',
+   'iran-inflation-emplois-ajustements-marche-interieur',
+   'articles/iran-economie-1.jpg',
+   CURRENT_DATE,
+   NOW() - INTERVAL '9 days',
+   'Iran : inflation, emplois et ajustements du marche interieur',
+   'Analyse de demonstration sur les effets de l inflation et les adaptations du marche interieur en Iran.',
+   3,
+   2,
+   5
+),
+(
+   'Iran : commerce regional, corridors logistiques et resilience',
+   '<h2>Le role des corridors commerciaux</h2>
+<p>Les corridors logistiques structurent la circulation des marchandises, des pieces detachees et des produits essentiels. En periode de tension, leur fiabilite devient un enjeu economique majeur. Cet article de demonstration presente des repères d analyse utiles pour le suivi editorial.</p>
+
+<h2>Risque logistique et cout final</h2>
+<p>Le cout final d un produit depend du transport, de l assurance, du stockage et de la prevision de la demande. Quand les risques augmentent, chaque maillon ajoute une prime de prudence. Cette accumulation se transmet progressivement au consommateur final.</p>
+
+<h2>Strategies d adaptation des acteurs</h2>
+<p>Les importateurs et distributeurs diversifient souvent leurs points d entree et ajustent les volumes par lots. Les entreprises renforcent leurs stocks de securite sur les references critiques. Cette adaptation améliore la continuité de service mais mobilise davantage de capital.</p>
+
+<h2>Effets regionaux</h2>
+<p>Le commerce regional peut amortir certains chocs lorsque des routes alternatives restent ouvertes. Toutefois, l efficacite de ces alternatives depend de la capacite douaniere, de la fluidite administrative et des couts de transit. Une comparaison entre flux officiels et delais observes est indispensable.</p>
+
+<h2>Lecture pour les decideurs</h2>
+<p>Pour piloter la resilience, les decideurs suivent les points de congestion, les stocks critiques et les ruptures repetitives. Les interventions prioritaires concernent en general les secteurs a forte sensibilité sociale: alimentation, sante, energie et transport. La coordination interinstitutionnelle reste un facteur cle.</p>
+
+<h2>Conclusion</h2>
+<p>La resilience logistique ne supprime pas les tensions, mais elle en limite les effets les plus severes. Elle suppose une planification continue et des arbitrages transparents. Dans un cadre d analyse, la qualite des donnees operationnelles conditionne la pertinence des conclusions.</p>',
+   'iran-commerce-regional-corridors-logistiques-resilience',
+   'articles/iran-economie-2.jpg',
+   CURRENT_DATE,
+   NOW() - INTERVAL '5 days',
+   'Iran : commerce regional, corridors logistiques et resilience',
+   'Article de demonstration sur les corridors logistiques et la resilience commerciale en Iran.',
+   3,
+   2,
+   6
+),
+(
+   'Iran : dynamiques culturelles, medias et espace public',
+   '<h2>Culture et cohesion sociale</h2>
+<p>Les pratiques culturelles jouent un role central dans la cohesion sociale et la transmission des reperes collectifs. Elles evoluent selon les generations, les territoires et les conditions economiques. Cet article de demonstration propose une lecture synthétique de ces dynamiques.</p>
+
+<h2>Medias et circulation des contenus</h2>
+<p>La diffusion des contenus culturels passe aujourd hui par des canaux hybrides: institutions, plateformes numeriques et reseaux locaux. Cette pluralite augmente la vitesse de circulation des tendances mais rend plus complexe la verification des informations. Les redactions s appuient sur des sources croisees pour limiter les biais.</p>
+
+<h2>Creation et contraintes</h2>
+<p>Les acteurs culturels composent avec des contraintes de financement, d acces aux equipements et de diffusion. Malgré ces limites, les initiatives locales continuent de produire des espaces d expression et de dialogue. Les evenements de proximite conservent une importance forte dans les parcours artistiques.</p>
+
+<h2>Patrimoine et modernite</h2>
+<p>Le rapport entre patrimoine et creation contemporaine n est pas un face a face binaire. De nombreux projets combinent references historiques et formats modernes pour toucher de nouveaux publics. Cette articulation contribue a renouveler les narrations culturelles sans rompre avec les ancrages locaux.</p>
+
+<h2>Indicateurs de suivi</h2>
+<p>Les observateurs suivent l activite des lieux culturels, la participation du public, la diffusion numerique et la viabilite economique des projets. Ces indicateurs permettent d evaluer la vitalite du secteur au dela des seuls discours. Une approche longitudinale reste preferable aux lectures ponctuelles.</p>
+
+<h2>Conclusion</h2>
+<p>Les dynamiques culturelles en Iran reflètent une société en adaptation continue. Elles combinent contraintes structurelles et capacites d innovation locale. Une observation rigoureuse aide a distinguer tendances profondes et effets conjoncturels.</p>',
+   'iran-dynamiques-culturelles-medias-espace-public',
+   'articles/iran-culture-1.jpg',
+   CURRENT_DATE,
+   NOW() - INTERVAL '6 days',
+   'Iran : dynamiques culturelles, medias et espace public',
+   'Analyse de demonstration sur les evolutions culturelles, mediatiques et sociales en Iran.',
+   4,
+   2,
+   3
+),
+(
+   'Iran : patrimoine, education artistique et transmission',
+   '<h2>Transmission culturelle</h2>
+<p>La transmission culturelle repose sur des institutions formelles, des initiatives communautaires et des pratiques familiales. Ce triptyque permet de maintenir des references communes tout en integrant des innovations pedagogiques. Dans un cadre de demonstration, cet article met l accent sur les mecanismes generaux.</p>
+
+<h2>Education artistique</h2>
+<p>L education artistique contribue a la formation de competences transversales: expression, esprit critique et travail collectif. Son impact depend de l acces aux ressources, de la formation des encadrants et de la regularite des programmes. Les inegalites territoriales demeurent un point de vigilance important.</p>
+
+<h2>Role des institutions locales</h2>
+<p>Bibliotheques, centres culturels et associations locales jouent un role d intermediation essentiel. Ils facilitent la rencontre entre publics, artistes et mediateurs. Leur capacite d action repose souvent sur des partenariats et sur la stabilité de financements modestes mais continus.</p>
+
+<h2>Numérique et accessibilite</h2>
+<p>Le numerique élargit l acces aux contenus et favorise la diffusion hors des grands centres urbains. En contrepartie, il exige des competences de selection et de verification des sources. Les approches hybrides, combinant presentiel et diffusion en ligne, gagnent en pertinence.</p>
+
+<h2>Evaluation des politiques culturelles</h2>
+<p>L evaluation peut s appuyer sur la frequentation, la diversite des publics, la qualite percue et la pérennité des projets. Ces indicateurs aident a ajuster les priorites sans reduire la culture a une seule logique de volume. La co-construction avec les acteurs locaux reste decisive.</p>
+
+<h2>Conclusion</h2>
+<p>Le patrimoine et l education artistique constituent des leviers de cohesion et de projection collective. Leur efficacite depend de la continuité des actions et de l inclusion des publics. Une politique stable et lisible renforce la confiance dans les institutions culturelles.</p>',
+   'iran-patrimoine-education-artistique-transmission',
+   'articles/iran-culture-2.jpg',
+   CURRENT_DATE,
+   NOW() - INTERVAL '3 days',
+   'Iran : patrimoine, education artistique et transmission',
+   'Article de demonstration sur la transmission culturelle et l education artistique en Iran.',
+   4,
+   2,
+   4
+),
+(
+   'Iran : capacite hospitaliere et continuite des soins',
+   '<h2>Pression sur les structures de soins</h2>
+<p>La capacite hospitaliere est un indicateur central en periode de tension, qu elle soit sanitaire, sociale ou securitaire. Les etablissements doivent absorber des pics de demande tout en maintenant les parcours de soins ordinaires. Cet article de demonstration presente une lecture operationnelle de ces contraintes.</p>
+
+<h2>Ressources humaines et organisation</h2>
+<p>La disponibilite des equipes soignantes conditionne la qualite de prise en charge. Les plannings prolonges, la fatigue et les tensions logistiques peuvent peser sur l efficacite globale. Les directions hospitalieres mettent souvent en place des dispositifs de priorisation et de rotation renforcée.</p>
+
+<h2>Medicaments et equipements</h2>
+<p>La continuité des soins depend de chaines d approvisionnement fiables pour les produits critiques. Les ruptures ponctuelles imposent des substitutions et des ajustements de protocoles. Une coordination fine entre pharmacie, achats et services cliniques devient alors indispensable.</p>
+
+<h2>Acces territorial aux soins</h2>
+<p>Les écarts entre zones urbaines et periurbaines restent un enjeu de fond. L acces au transport, la disponibilite de specialistes et les delais d orientation influencent directement les resultats de santé. Les dispositifs de telemedecine peuvent partiellement compenser certaines distances.</p>
+
+<h2>Indicateurs de pilotage</h2>
+<p>Les indicateurs utiles incluent les taux d occupation, les delais d attente, les stocks critiques et la continuité des soins programmés. Leur suivi frequent permet d anticiper les points de rupture. Les decisions gagnent en efficacite lorsqu elles s appuient sur des donnees consolidées.</p>
+
+<h2>Conclusion</h2>
+<p>Renforcer la capacite hospitaliere ne se limite pas a ajouter des lits. Il s agit d organiser durablement les ressources humaines, les flux logistiques et la coordination territoriale. Cette approche systémique améliore la resilience du systeme de santé.</p>',
+   'iran-capacite-hospitaliere-continuite-soins',
+   'articles/iran-sante-1.jpg',
+   CURRENT_DATE,
+   NOW() - INTERVAL '8 days',
+   'Iran : capacite hospitaliere et continuite des soins',
+   'Analyse de demonstration sur la capacite hospitaliere et la continuite des soins en Iran.',
+   5,
+   2,
+   5
+),
+(
+   'Iran : prevention communautaire et sante publique locale',
+   '<h2>Prevention de proximite</h2>
+<p>La prevention communautaire repose sur des actions simples, repetées et visibles au plus près des habitants. Elle combine information, depistage, orientation et suivi des publics fragiles. Dans un cadre de demonstration, cet article illustre les leviers principaux de cette approche.</p>
+
+<h2>Coordination entre acteurs</h2>
+<p>Les résultats dépendent de la coordination entre centres de sante, collectivités locales et associations. Une gouvernance claire facilite la circulation de l information et la rapidite d intervention. Les dispositifs les plus efficaces sont ceux qui maintiennent un lien regulier avec les relais de terrain.</p>
+
+<h2>Communication et confiance</h2>
+<p>La qualité de la communication influence fortement l adoption des messages de sante publique. Les contenus doivent etre compréhensibles, contextualisés et relayés par des acteurs crédibles. Une stratégie multicanale, incluant présence locale et outils numériques, améliore la portée des campagnes.</p>
+
+<h2>Suivi des populations vulnerables</h2>
+<p>Les personnes âgées, les malades chroniques et les foyers en situation précaire nécessitent un suivi renforcé. L identification précoce des besoins réduit les ruptures de parcours et limite les complications évitables. Les visites de proximité et l orientation rapide vers les services adaptés sont des facteurs clés.</p>
+
+<h2>Evaluation des dispositifs</h2>
+<p>L evaluation s appuie sur la couverture des actions, la qualité perçue et la continuité de suivi. Les retours de terrain permettent d ajuster rapidement les priorités opérationnelles. Une boucle d amélioration continue renforce l impact des programmes de prévention.</p>
+
+<h2>Conclusion</h2>
+<p>La sante publique locale gagne en efficacité lorsqu elle articule prévention, coordination et confiance. Les actions de proximité restent essentielles pour maintenir un accès équitable aux services. Une planification réaliste et des indicateurs clairs soutiennent la durabilité des résultats.</p>',
+   'iran-prevention-communautaire-sante-publique-locale',
+   'articles/iran-sante-2.jpg',
+   CURRENT_DATE,
+   NOW() - INTERVAL '2 days',
+   'Iran : prevention communautaire et sante publique locale',
+   'Article de demonstration sur la prevention communautaire et les dispositifs locaux de sante publique.',
+   5,
+   2,
+   6
+);
+
+
+
+
 
 

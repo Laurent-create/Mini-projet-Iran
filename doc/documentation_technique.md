@@ -20,7 +20,7 @@ Capture:
 ![FO liste articles](captures/fo_01_liste_articles.png)
 
 Explication:
-- Affichage de la liste avec article principal (featured), cartes d'articles et pagination.
+- Affichage de la liste avec article principal, cartes d'articles et pagination.
 - Les liens utilisent des URLs propres de type /articles/{slug}.
 
 ### Feature FO-02 - Detail d'un article
@@ -80,17 +80,7 @@ Explication:
 - Routes: /login, /register, /logout
 - Comptes precharges dans la base (voir section 6).
 
-### Feature BO-02 - Dashboard
-
-Capture:
-![BO dashboard](captures/bo_02_dashboard.png)
-
-Explication:
-- Ecran d'accueil apres connexion affichant l'etat du systeme.
-- Route: /dashboard
-- Affichage des statistiques et liens d'acces rapide.
-
-### Feature BO-03 - Gestion des articles (CRUD)
+### Feature BO-02 - Gestion des articles (CRUD)
 
 Capture:
 ![BO articles list](captures/bo_03_articles_list.png)
@@ -100,7 +90,7 @@ Explication:
 - Routes: GET /articles, GET /articles/create, POST /articles/create, GET /articles/edit, POST /articles/edit
 - Actions: creer, editer, publier, archiver, supprimer.
 
-### Feature BO-04 - Editeur d'articles avec TinyMCE
+### Feature BO-03 - Editeur d'articles avec TinyMCE
 
 Capture:
 ![BO article editor](captures/bo_04_article_editor.png)
@@ -111,7 +101,7 @@ Explication:
 - Images sauvegardees dans /uploads/articles/content/.
 - Meta-donnees (titre, description, slug, categorie) generees automatiquement.
 
-### Feature BO-05 - Publication et archivage d'articles
+### Feature BO-04 - Publication et archivage d'articles
 
 Capture:
 ![BO article publish](captures/bo_05_article_publish.png)
@@ -121,7 +111,7 @@ Explication:
 - Routes POST: /articles/publish, /articles/archive, /articles/destroy.
 - Seuls les admins et proprietaires peuvent modifier les articles.
 
-### Feature BO-06 - Gestion des categories
+### Feature BO-05 - Gestion des categories
 
 Capture:
 ![BO categories](captures/bo_06_categories.png)
@@ -131,7 +121,7 @@ Explication:
 - Routes: GET /categories, GET /categories/create, POST /categories/create, GET /categories/edit, POST /categories/edit, POST /categories/destroy.
 - Categories precharges: Politique, Conflits, Economie, Culture, Sante.
 
-### Feature BO-07 - Gestion des utilisateurs (Admin only)
+### Feature BO-06 - Gestion des utilisateurs (Admin only)
 
 Capture:
 ![BO users](captures/bo_07_users.png)
@@ -228,7 +218,7 @@ Source: seed SQL du projet.
 
 URL et routes BackOffice:
 - URL BackOffice: http://localhost:8081
-- Route d'accueil apres connexion: http://localhost:8081/dashboard
+- Route d'accueil apres connexion: http://localhost:8081/accueil
 - Route de login: http://localhost:8081/login
 - Route de deconnexion: POST sur /logout
 
@@ -241,8 +231,8 @@ URL et routes BackOffice:
 - POST /register - Traitement de l'inscription
 - POST /logout - Deconnexion
 
-### Dashboard
-- GET /dashboard - Ecran d'accueil
+### Accueil
+- GET /accueil - Ecran d'accueil
 
 ### Articles
 - GET /articles - Liste des articles (avec filtres)
@@ -276,7 +266,7 @@ URL et routes BackOffice:
 - [x] Routes et URLs documentees correctement
 - [x] Comptes par defaut verifies et documentes
 - [x] Tables de base de donnees validees
-- [x] Features BackOffice documentees (7 features principales)
+- [x] Features BackOffice documentees (6 features principales)
 - [ ] Remplacer toutes les captures placeholders par vos vraies captures
 - [ ] Verifier les droits d'acces pour les redacteurs vs admins
 - [ ] Exporter ce fichier en .doc si necessaire pour la livraison finale
