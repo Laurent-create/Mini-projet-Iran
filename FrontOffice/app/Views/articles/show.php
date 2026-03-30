@@ -10,7 +10,19 @@ $resolveImageUrl = static function (string $path): string {
         return $path;
     }
 
-    return '/' . ltrim($path, '/');
+    if (str_starts_with($path, '/')) {
+        return $path;
+    }
+
+    if (str_starts_with($path, 'uploads/')) {
+        return '/' . ltrim($path, '/');
+    }
+
+    if (str_starts_with($path, 'articles/')) {
+        return '/uploads/' . ltrim($path, '/');
+    }
+
+    return '/uploads/' . ltrim($path, '/');
 };
 
 $buildVariantUrl = static function (string $path, string $preset) use ($resolveImageUrl): string {

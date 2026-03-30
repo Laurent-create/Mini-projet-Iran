@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BackOffice - Connexion | Plateforme de création d'articles</title>
+    <link rel="icon" type="image/png" sizes="64x64" href="/uploads/iran_focus_logo_64.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/uploads/iran_focus_logo_180.png">
     <style>
         * {
             margin: 0;
