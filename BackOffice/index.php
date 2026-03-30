@@ -125,7 +125,7 @@ if ($path === '/logout' && $method === 'POST') {
 	exit;
 }
 
-// Accueil (Dashboard)
+// Accueil
 if ($path === '/accueil' && $method === 'GET') {
 	(new DashboardController($pdo))->index();
 	exit;
