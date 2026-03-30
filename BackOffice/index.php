@@ -97,7 +97,7 @@ $files = $_FILES;
 $isLoggedIn = isset($_SESSION['user']) && is_array($_SESSION['user']);
 
 if ($path === '/') {
-	header('Location: ' . ($baseDir === '/' ? '' : $baseDir) . ($isLoggedIn ? '/dashboard' : '/login'));
+	header('Location: ' . ($baseDir === '/' ? '' : $baseDir) . ($isLoggedIn ? '/accueil' : '/login'));
 	exit;
 }
 
@@ -125,8 +125,8 @@ if ($path === '/logout' && $method === 'POST') {
 	exit;
 }
 
-// Dashboard
-if ($path === '/dashboard' && $method === 'GET') {
+// Accueil (Dashboard)
+if ($path === '/accueil' && $method === 'GET') {
 	(new DashboardController($pdo))->index();
 	exit;
 }

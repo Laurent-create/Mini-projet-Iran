@@ -19,7 +19,7 @@ final class AuthController extends Controller
     public function loginForm(): void
     {
         if ($this->currentUser() !== null) {
-            $this->redirect('/dashboard');
+            $this->redirect('/accueil');
         }
 
         $this->renderFullPage('auth/login', [
@@ -71,13 +71,13 @@ final class AuthController extends Controller
             'type' => (int) $user['type'],
         ];
 
-        $this->redirect('/dashboard');
+        $this->redirect('/accueil');
     }
 
     public function registerForm(): void
     {
         if ($this->currentUser() !== null) {
-            $this->redirect('/dashboard');
+            $this->redirect('/accueil');
         }
 
         $this->renderFullPage('auth/register', [

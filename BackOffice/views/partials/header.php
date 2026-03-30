@@ -4,7 +4,7 @@ $currentUser = $currentUser ?? null;
 $csrfToken = $csrfToken ?? '';
 $isLoggedIn = is_array($currentUser) && !empty($currentUser['id']);
 $isAdmin = $isLoggedIn && (int)($currentUser['type'] ?? 0) === 1;
-$homeHref = $isLoggedIn ? ($baseUrl . '/dashboard') : ($baseUrl . '/login');
+$homeHref = $isLoggedIn ? ($baseUrl . '/accueil') : ($baseUrl . '/login');
 ?>
 <div class="navbar">
     <div class="navbar-container">
