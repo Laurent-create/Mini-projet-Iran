@@ -9,8 +9,8 @@
 
 ## 2. Equipe (Num ETU)
 
-- ETU003241
-- ETU003337
+- ETU003241 - ANDRIAMAROZAKA Lovaniaina Nathanael
+- ETU003337 - RANDRIAMANANJARA Mamisoa Laurent
 
 ## 3. Captures d'ecran FrontOffice (1 capture par feature)
 

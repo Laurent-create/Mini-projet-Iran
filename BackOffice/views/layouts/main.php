@@ -13,6 +13,8 @@ $pageTitle = $title ?? 'BackOffice2';
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="<?= htmlspecialchars((string)($csrfToken ?? '')) ?>">
     <title><?= htmlspecialchars($pageTitle) ?></title>
+    <link rel="icon" type="image/png" sizes="64x64" href="/uploads/iran_focus_logo_64.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/uploads/iran_focus_logo_180.png">
     <link rel="stylesheet" href="<?= htmlspecialchars($baseUrl . '/public/css/style.css') ?>">
 </head>
 <body>

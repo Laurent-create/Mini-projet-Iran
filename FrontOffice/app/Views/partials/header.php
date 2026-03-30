@@ -5,7 +5,7 @@ $title = isset($title) ? (string) $title : 'Iran Focus';
 $categories = isset($categories) && is_array($categories) ? $categories : [];
 $search = isset($search) ? (string) $search : '';
 $categoryId = isset($categoryId) ? (int) $categoryId : 0;
-$logoPath = '/assets/images/iran_focus_logo.png';
+$logoPath = '/uploads/iran_focus_logo.png';
 $logoPathOptimized = '/media/resize/logo' . $logoPath;
 $logoPathOptimized2x = '/media/resize/logo2x' . $logoPath;
 $metaDescription = isset($metaDescription) ? (string) $metaDescription : 'Iran Focus - analyses geopolitique et actualites sur l\'Iran.';
@@ -37,6 +37,8 @@ if ($search !== '') {
     <title><?= htmlspecialchars($title, ENT_QUOTES, 'UTF-8') ?></title>
     <meta name="description" content="<?= htmlspecialchars($metaDescription, ENT_QUOTES, 'UTF-8') ?>">
     <meta name="robots" content="<?= htmlspecialchars($robotsMeta, ENT_QUOTES, 'UTF-8') ?>">
+    <link rel="icon" type="image/png" sizes="64x64" href="/uploads/iran_focus_logo_64.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/uploads/iran_focus_logo_180.png">
     <link rel="canonical" href="<?= htmlspecialchars($canonicalUrl, ENT_QUOTES, 'UTF-8') ?>">
     <link rel="alternate" hreflang="fr" href="<?= htmlspecialchars($canonicalUrl, ENT_QUOTES, 'UTF-8') ?>">
     <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
