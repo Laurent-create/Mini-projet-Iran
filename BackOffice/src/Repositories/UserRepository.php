@@ -31,6 +31,71 @@ final class UserRepository extends Repository
         return $users;
     }
 
+    /** @param array<string, mixed> $filters */
+    public function paginate(array $filters, int $page, int $perPage = 10): array
+    {
+        $page = max(1, $page);
+        $perPage = max(1, min(100, $perPage));
+        $offset = ($page - 1) * $perPage;
+
+        $where = [];
+        $params = [];
+
+        $q = trim((string) ($filters['q'] ?? ''));
+        if ($q !== '') {
+            $where[] = '(u.nom ILIKE :q OR u.email ILIKE :q)';
+            $params[':q'] = '%' . $q . '%';
+        }
+
+        $type = (int) ($filters['type'] ?? 0);
+        if ($type > 0) {
+            $where[] = 'u.id_type_utilisateur = :type';
+            $params[':type'] = $type;
+        }
+
+        $whereSql = empty($where) ? '' : ('WHERE ' . implode(' AND ', $where));
+
+        $countStmt = $this->pdo->prepare(
+            'SELECT COUNT(*) FROM utilisateur u ' . $whereSql
+        );
+        $countStmt->execute($params);
+        $total = (int) $countStmt->fetchColumn();
+
+        $sql =
+            'SELECT u.id_utilisateur, u.nom, u.email, u.id_type_utilisateur, u.date_creation ' .
+            'FROM utilisateur u ' .
+            $whereSql . ' ' .
+            'ORDER BY u.id_utilisateur DESC LIMIT :limit OFFSET :offset';
+
+        $stmt = $this->pdo->prepare($sql);
+        foreach ($params as $k => $v) {
+            $stmt->bindValue($k, $v);
+        }
+        $stmt->bindValue(':limit', $perPage, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $rows = $stmt->fetchAll();
+        $users = [];
+
+        foreach ($rows as $row) {
+            $user = new UserModel();
+            $user->id_utilisateur = (int) $row['id_utilisateur'];
+            $user->nom = (string) $row['nom'];
+            $user->email = (string) $row['email'];
+            $user->id_type_utilisateur = (int) $row['id_type_utilisateur'];
+            $users[] = $user;
+        }
+
+        return [
+            'items' => $users,
+            'total' => $total,
+            'page' => $page,
+            'perPage' => $perPage,
+            'pages' => (int) ceil($total / $perPage),
+        ];
+    }
+
     public function find(int $id): ?UserModel
     {
         $stmt = $this->pdo->prepare('SELECT id_utilisateur, nom, email, id_type_utilisateur FROM utilisateur WHERE id_utilisateur = :id');

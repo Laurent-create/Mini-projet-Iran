@@ -20,10 +20,21 @@ final class UserController extends Controller
     {
         $this->requireAdmin();
 
+        $filters = [
+            'q' => trim((string) ($_GET['q'] ?? '')),
+            'type' => isset($_GET['type']) ? (int) $_GET['type'] : 0,
+        ];
+
+        $page = isset($_GET['page']) ? max(1, (int) $_GET['page']) : 1;
+
+        $result = $this->users->paginate($filters, $page, 10);
+
         $this->render('users/index', [
             'title' => 'Utilisateurs',
             'baseUrl' => $this->baseUrl(),
-            'users' => $this->users->all(),
+            'users' => $result['items'],
+            'pagination' => $result,
+            'filters' => $filters,
             'types' => $this->users->types(),
         ]);
     }

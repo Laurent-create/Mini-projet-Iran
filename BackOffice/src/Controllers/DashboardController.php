@@ -17,7 +17,7 @@ final class DashboardController extends Controller
         $this->requireAuth();
 
         $this->render('dashboard/index', [
-            'title' => 'Dashboard',
+            'title' => 'Accueil',
         ]);
     }
 }
