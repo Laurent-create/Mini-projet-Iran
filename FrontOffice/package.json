@@ -1,0 +1,20 @@
+{
+  "name": "frontoffice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "minify:css": "postcss assets/css/app.css -o assets/css/app.min.css",
+    "build": "npm run minify:css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "cssnano": "^7.1.4",
+    "postcss": "^8.5.8",
+    "postcss-cli": "^11.0.1",
+    "terser": "^5.46.1"
+  }
+}
