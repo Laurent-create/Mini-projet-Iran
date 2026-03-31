@@ -485,6 +485,112 @@ final class ArticleController extends Controller
         $filename = bin2hex(random_bytes(10)) . '.' . $ext;
         $target = $storageDir . '/' . $filename;
 
+        // Try to resize with imagick (if available)
+        if (extension_loaded('imagick')) {
+            try {
+                $image = new \Imagick($tmp);
+                $image->resizeImage(960, 540, \Imagick::FILTER_LANCZOS, 1, true);
+                $image->stripImage();
+                $image->setImageFormat($ext);
+                $image->setImageCompressionQuality(85);
+                file_put_contents($target, $image);
+                $image->destroy();
+                return trim($subDir, '/') . '/' . $filename;
+            } catch (\Throwable $e) {
+                // Continue to next method
+            }
+        }
+
+        // Try to resize with GD (if available)
+        if (extension_loaded('gd')) {
+            try {
+                $imageContent = file_get_contents($tmp);
+                if ($imageContent === false) {
+                    return null;
+                }
+
+                $image = imagecreatefromstring($imageContent);
+                if ($image === false) {
+                    return null;
+                }
+
+                $srcWidth = (int) imagesx($image);
+                $srcHeight = (int) imagesy($image);
+                $targetWidth = 960;
+                $targetHeight = 540;
+
+                // Calculate crop dimensions to maintain aspect ratio
+                $srcRatio = $srcWidth / $srcHeight;
+                $targetRatio = $targetWidth / $targetHeight;
+
+                if ($srcRatio > $targetRatio) {
+                    // Image is wider than target - crop width
+                    $cropWidth = (int) ($srcHeight * $targetRatio);
+                    $cropHeight = $srcHeight;
+                    $cropX = (int) (($srcWidth - $cropWidth) / 2);
+                    $cropY = 0;
+                } else {
+                    // Image is taller than target - crop height
+                    $cropWidth = $srcWidth;
+                    $cropHeight = (int) ($srcWidth / $targetRatio);
+                    $cropX = 0;
+                    $cropY = (int) (($srcHeight - $cropHeight) / 2);
+                }
+
+                // Create cropped and resized image
+                $resizedImage = imagecreatetruecolor($targetWidth, $targetHeight);
+                if ($resizedImage === false) {
+                    imagedestroy($image);
+                    return null;
+                }
+
+                if (!imagecopyresampled(
+                    $resizedImage,
+                    $image,
+                    0,
+                    0,
+                    $cropX,
+                    $cropY,
+                    $targetWidth,
+                    $targetHeight,
+                    $cropWidth,
+                    $cropHeight
+                )) {
+                    imagedestroy($image);
+                    imagedestroy($resizedImage);
+                    return null;
+                }
+
+                imagedestroy($image);
+
+                // Save the resized image
+                $saved = false;
+                switch ($ext) {
+                    case 'jpg':
+                        $saved = imagejpeg($resizedImage, $target, 85);
+                        break;
+                    case 'png':
+                        $saved = imagepng($resizedImage, $target, 9);
+                        break;
+                    case 'webp':
+                        $saved = imagewebp($resizedImage, $target, 85);
+                        break;
+                    case 'gif':
+                        $saved = imagegif($resizedImage, $target);
+                        break;
+                }
+
+                imagedestroy($resizedImage);
+
+                if ($saved) {
+                    return trim($subDir, '/') . '/' . $filename;
+                }
+            } catch (\Throwable $e) {
+                // Continue to fallback
+            }
+        }
+
+        // Fallback: save original file without resizing
         if (!move_uploaded_file($tmp, $target)) {
             return null;
         }
